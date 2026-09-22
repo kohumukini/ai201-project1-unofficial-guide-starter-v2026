@@ -23,8 +23,7 @@ For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
+Expecting all tests to pass is unrealistic as verbage and context specificity heavily affectcs model accuracy. Hyper specific questions may be ignored due to the lack of clear information or incorrect language.
 
 ---
 
@@ -33,8 +32,7 @@ contains the answer.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
+Answers provided by the llm must be based on context provided to prevent hallucinations and incorrect answers.
 
 ---
 
@@ -55,7 +53,7 @@ in at least 4 of 5 tries.
 
 ---
 
-## 4. Something about your chunks
+## 4. At least 9 of 10 chunks sizes reside within the window of 40-120 words (~150-500) characters with a ~10% character overlap between chunks
 
 <!-- YOU WRITE THIS ONE.
 
@@ -71,14 +69,10 @@ in at least 4 of 5 tries.
 
 
 
-**Why this target:**
-
-
-
+**Why this target:** The documents provided are small enough that smaller chunks are necessary to parse information correctly. Most chunks should pass this test however, some chunks may end up containing less than 40 characters due to the document length.
 ---
 
-## 5. Your choice
-
+## 5. For all 5 test questions, the model provides clear and concise answers in under 2 sentences with citations. 
 <!-- YOU WRITE THIS ONE TOO.
 
      Pick something you actually care about getting right. It could be about
@@ -90,9 +84,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
-
-
+A RAG system needs to base its information on the context provided AND return clear answers that help the user regardless of the question. Longer answers can lead to the inclusion of irrelevant information and inadequate context alongside the answers. 
 ---
 
 <!-- ─────────────────────────────────────────────────────────────────────────
