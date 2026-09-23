@@ -134,7 +134,7 @@ Halden Bay is more serious — exposed, and closed in high wind.
 <!-- One complete question and answer, pasted as text, with the source line
      visible. Milestone 4. -->
 
-**Question:**
+**Question:** What is the most accessible town within this region 
 
 **Answer:**
 
@@ -167,9 +167,9 @@ Halden Bay is more serious — exposed, and closed in high wind.
 
      Milestone 5. -->
 
-**1.**
+**1.** I asked AI to validate my chunking system's logical reasoning. I wanted to use regex to build a chunking system that does not abrubtly end each chunk. I utilized AI to bridge the gaps I had within the first iterations of my function. It came back with a regex pattern, an adjustment to the overlapping system, and a few syntax corrections. 
 
-**2.**
+**2.** When generating questions, I asked gemini to give me exmaples of what good questions are and why are they are good questions. Gemini gave me a few examples and stated that good testing questions should require multiple sources, be hyper specific to a doc, or be a general enough question that has an answer, but is hard to find within a pile of similar answers. 
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
