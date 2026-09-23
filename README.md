@@ -53,30 +53,80 @@ Corpora - City Guides
      across.
 
      Milestone 3. -->
+     
 
-**Chunk 1** — source: `` — produced by: ``
-
-```
-```
-
-**Chunk 2** — source: `` — produced by: ``
+**Chunk 1** — source: ``guide_accessibility.md — produced by: chunker.py::split_documents``
 
 ```
+======================================================================
+Chunk 1  |  source: guide_accessibility.md#0  |  produced by: chunker.py::split_documents
+======================================================================
+# Getting around the region with limited mobility
+
+An honest assessment rather than a promotional one. Some of these places are
+difficult and it is better to know in advance.
+
+## Straightforward
+
+**Thornby Wells** is the easiest town in the region. It is flat, compact, and
+everything is within three minutes of everything else.
 ```
 
-**Chunk 3** — source: `` — produced by: ``
+**Chunk 2** — source: ``guide_corry_vale.md — produced by: chunker.py::split_documents``
 
 ```
+======================================================================
+Chunk 2  |  source: guide_corry_vale.md#4  |  produced by: chunker.py::split_documents
+======================================================================
+ions.
+
+## What to see
+
+The valley itself is the attraction. The footpath network is dense and well marked, and a circuit taking in three of the four villages is about nine miles with 500 metres of ascent. The chapel in the second village is 12th century and always unlocked.
+
+## Where to stay
+
+Perhaps thirty beds in the entire valley, spread across two pubs and a handful of farmhouse rooms.
 ```
 
-**Chunk 4** — source: `` — produced by: ``
+**Chunk 3** — source: ``guide_givens_mill.md — produced by: chunker.py::split_documents``
 
 ```
+======================================================================
+Chunk 3  |  source: guide_givens_mill.md#2  |  produced by: chunker.py::split_documents
+======================================================================
+ontinues in both directions for as far as you want to walk.
+
+## Eat and drink
+
+A tearoom attached to the mill, open 10 to 4 daily except Tuesdays, which sells bread made from the flour ground twenty metres away and is the reason most people come. One pub, food served lunchtimes and Thursday to Saturday evenings.
 ```
 
-**Chunk 5** — source: `` — produced by: ``
+**Chunk 4** — source: ``guide_marchwood.md — produced by: chunker.py::split_documents``
 
 ```
+======================================================================
+Chunk 4  |  source: guide_marchwood.md#0  |  produced by: chunker.py::split_documents
+======================================================================
+# Marchwood
+
+Marchwood is the regional hub — 180,000 people, the junction everyone changes trains at, and a city most visitors pass through rather than stop in. That is a mistake, though an understandable one, since almost nothing of interest is near the station.
+
+## Getting there
+
+Every railway line in the region meets here, which is the city's defining feature.
+```
+
+**Chunk 5** — source: ``guide_regional_transport.md — produced by: chunker.py::split_documents``
+
+```
+======================================================================
+Chunk 5  |  source: guide_regional_transport.md#5  |  produced by: chunker.py::split_documents
+======================================================================
+rom Brightwater runs four miles upstream on a good surface. The
+old railway trackbed from Kestrelford runs six miles on an easy gradient and is
+the best walking in the region for the effort involved. The coastal path from
+Halden Bay is more serious — exposed, and closed in high wind.
 ```
 
 ## Sample Answer

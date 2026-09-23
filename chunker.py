@@ -25,7 +25,13 @@ your pipeline, not giving up.
 from dataclasses import dataclass
 
 import config
+import re
 from ingest import Document
+
+def _backtrack_to_word_boundary(text, start, min_start):
+    while start > min_start and start < len(text) and not re.match(r"\s", text[start - 1]):
+        start -= 1
+    return start
 
 
 @dataclass
@@ -97,7 +103,50 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
       - Would splitting on paragraph breaks keep more thoughts intact than
         splitting on a character count?
     """
-    return fallback_split(documents)
+    chunk_size = config.CHUNK_SIZE
+    chunk_overlap = config.CHUNK_OVERLAP
+    terminal_punc_filter = r'[.!?]\s'
+    
+    chunks: list[Chunk] = []
+    for doc in documents:
+        text = doc.text 
+        start = 0
+        index = 0
+        
+        while start < len(text): 
+            if len(text) - start <= chunk_size: 
+                chunks.append(Chunk(text[start:], doc.source, index, "chunker.py::split_documents"))
+                break
+            
+            end = start + chunk_size
+            chunk = text[start:end]
+            sentence_endings = list(re.finditer(terminal_punc_filter, chunk))
+            
+            if sentence_endings: 
+                shifted_ending = start + sentence_endings[-1].end()
+                overlap_start = start + sentence_endings[-2].end() if len(sentence_endings) >= 2 else shifted_ending
+                overlap_len = overlap_start - chunk_overlap
+                
+                if overlap_len > chunk_overlap: 
+                    desired_start = shifted_ending - chunk_overlap
+                    overlap_start = max(desired_start, overlap_start)
+                    overlap_start = _backtrack_to_word_boundary(chunk, desired_start, overlap_start)
+                
+                chunks.append(Chunk(
+                    text[start:shifted_ending].strip(), 
+                    doc.source, 
+                    index, 
+                    "chunker.py::split_documents"
+                ))
+                start = overlap_start
+            else: 
+                chunks.append(Chunk(text[start:end].strip(), doc.source, index, "chunker.py::split_documents"))
+                start = end
+                
+            index += 1
+                
+    return chunks
+
 
 
 def describe(chunks: list[Chunk]) -> str:
