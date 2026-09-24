@@ -28,12 +28,6 @@ import config
 import re
 from ingest import Document
 
-def _backtrack_to_word_boundary(text, start, min_start):
-    while start > min_start and start < len(text) and not re.match(r"\s", text[start - 1]):
-        start -= 1
-    return start
-
-
 @dataclass
 class Chunk:
     """One piece of one document."""
@@ -46,7 +40,6 @@ class Chunk:
     @property
     def label(self) -> str:
         return f"{self.source}#{self.index}"
-
 
 def fallback_split(
     documents: list[Document],
@@ -85,8 +78,35 @@ def fallback_split(
 
     return chunks
 
+def _split_section(text: str, MAX_CHUNK_SIZE: int, OVERLAP_SIZE: int) -> list[str]: 
+    if len(text) <= MAX_CHUNK_SIZE: 
+        return [text]
+    
+    pattern = r'\n\n|\n|[.!?]\s'
+    
+    middle = len(text) // 2
+    search_start = max(0, middle - (MAX_CHUNK_SIZE // 4))
+    search_end = min(len(text), middle + (MAX_CHUNK_SIZE // 4))
+    window = text[search_start:search_end]
+    
+    matches = list(re.finditer(pattern, window))
+    
+    if matches: 
+        best_match = min(matches, key=lambda m: abs((search_start + m.end()) - middle))
+        split_position = search_start + best_match.end()
+    else: 
+        split_position = middle
+        
+    left_chunk = text[:split_position].strip()
+    overlap_start = max(0, split_position - OVERLAP_SIZE)
+    right_chunk = text[overlap_start:].strip()
+    
+    if len(left_chunk) >= len(text) or len(right_chunk) >= len(text):
+        return [text[:MAX_CHUNK_SIZE].strip(), text[MAX_CHUNK_SIZE - OVERLAP_SIZE:].strip()]
+    
+    return _split_section(left_chunk, MAX_CHUNK_SIZE, OVERLAP_SIZE) + _split_section(right_chunk, MAX_CHUNK_SIZE, OVERLAP_SIZE)
 
-def split_documents(documents: list[Document]) -> list[Chunk]:
+def split_documents(documents: list[Document], MAX_CHUNK_SIZE: int = config.CHUNK_SIZE, OVERLAP_SIZE: int = config.CHUNK_OVERLAP) -> list[Chunk]:
     """
     Split documents into chunks. ⚠️ REPLACE THE BODY OF THIS IN MILESTONE 3.
 
@@ -98,54 +118,33 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
     the right function. `app.py chunks` prints that string for you.
 
     Things worth thinking about before you write any code:
-      - Are your documents short posts or long guides?
-      - Is the useful information in one sentence, or spread over a paragraph?
-      - Would splitting on paragraph breaks keep more thoughts intact than
+        - Are your documents short posts or long guides?
+        - Is the useful information in one sentence, or spread over a paragraph?
+        - Would splitting on paragraph breaks keep more thoughts intact than
         splitting on a character count?
     """
-    chunk_size = config.CHUNK_SIZE
-    chunk_overlap = config.CHUNK_OVERLAP
-    terminal_punc_filter = r'[.!?]\s'
-    
     chunks: list[Chunk] = []
-    for doc in documents:
-        text = doc.text 
-        start = 0
-        index = 0
+    header_pattern = r'(?=\n#{1,6}\s+)'
+    
+    for doc in documents: 
+        # Sections = text w/o whitespace for each text split by the headerpattern within the main text body if the text exists
+        sections = [s.strip() for s in re.split(header_pattern, doc.text) if s.strip()]
+        doc_chunks = []
         
-        while start < len(text): 
-            if len(text) - start <= chunk_size: 
-                chunks.append(Chunk(text[start:], doc.source, index, "chunker.py::split_documents"))
-                break
+        for section in sections: 
+            section_chunks = _split_section(section, MAX_CHUNK_SIZE, OVERLAP_SIZE)
+            doc_chunks.extend(section_chunks)
+        
+        for idx, text in enumerate(doc_chunks): 
+            chunks.append(Chunk(
+                text, 
+                doc.source, 
+                idx, 
+                "chunker.py::split_documents"
+            ))
             
-            end = start + chunk_size
-            chunk = text[start:end]
-            sentence_endings = list(re.finditer(terminal_punc_filter, chunk))
-            
-            if sentence_endings: 
-                shifted_ending = start + sentence_endings[-1].end()
-                overlap_start = start + sentence_endings[-2].end() if len(sentence_endings) >= 2 else shifted_ending
-                overlap_len = overlap_start - chunk_overlap
-                
-                if overlap_len > chunk_overlap: 
-                    desired_start = shifted_ending - chunk_overlap
-                    overlap_start = max(desired_start, overlap_start)
-                    overlap_start = _backtrack_to_word_boundary(chunk, desired_start, overlap_start)
-                
-                chunks.append(Chunk(
-                    text[start:shifted_ending].strip(), 
-                    doc.source, 
-                    index, 
-                    "chunker.py::split_documents"
-                ))
-                start = overlap_start
-            else: 
-                chunks.append(Chunk(text[start:end].strip(), doc.source, index, "chunker.py::split_documents"))
-                start = end
-                
-            index += 1
-                
     return chunks
+
 
 
 
