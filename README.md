@@ -22,6 +22,8 @@ Corpora - City Guides
 
 ## What This Does
 
+I chose the city guides corpus, which is a collection of documents describing the accessibility and features of each city that is listed. My system answers several questions from the level of accessibility to the services provided and tourist locations at each city. The purpose of this tool is to allow users to ask questions about city locations they wish to visit, and attain easy and clear answers.
+
 <!-- Three or four sentences. Which corpus you picked, and the kinds of
      questions your system answers. Write it for someone who has never seen
      this repo.
@@ -30,8 +32,10 @@ Corpora - City Guides
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** 400 characters
+**Overlap:** ~40 characters 
+
+Documents are ~2000 characters long but have several sections to be chunked. Each of these sections are 300-600 characters long, and to maintain context, each chunk should either be the length of the section, or split the section. 
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
@@ -139,9 +143,11 @@ Halden Bay is more serious — exposed, and closed in high wind.
 **Answer:**
 
 ```
+Based on `guide_accessibility.md`, Thornby Wells is described as the easiest town int he region, being flat, compact, and having level pump rooms and gardens. 
 ```
 
-**My relevance cutoff:**
+**My relevance cutoff:** Maintained at 0.6
+     The best distance for the OUT_OF_SCOPE questions was 0.784 for "What is the capital of Mongolia". As this question is way off target, I do believe that it is reasonable to keep the relevance cutoff at around 0.6. The worst distance for a question that I have asked with an answer was 0.584. This question 
 
 <!-- The number you set in config.py, and how you got there.
 
@@ -154,7 +160,7 @@ Halden Bay is more serious — exposed, and closed in high wind.
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| What times are the pubs in kestrelford open? | city_guides | 0.363 |
 
 ## How I Used AI
 
