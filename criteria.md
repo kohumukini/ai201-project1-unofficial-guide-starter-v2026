@@ -70,6 +70,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:** The documents provided are small enough that smaller chunks are necessary to parse information correctly. Most chunks should pass this test however, some chunks may end up containing less than 40 characters due to the document length.
+
 ---
 
 ## 5. For all 5 test questions, the model provides clear and concise answers in under 2 sentences with citations. 
@@ -85,7 +86,64 @@ in at least 4 of 5 tries.
 
 **Why this target:**
 A RAG system needs to base its information on the context provided AND return clear answers that help the user regardless of the question. Longer answers can lead to the inclusion of irrelevant information and inadequate context alongside the answers. 
+
 ---
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Retrieved chunk contains the answer | 4 of 5 | 2/5 | 2/5 | 2/5 | MISSED |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+
+
+### What hours are the pubs in Kestrelford open? — run 1
+
+- Best distance: 0.3277 (passed the gate)
+- Sources retrieved: guide_eating.md, guide_elder_ness.md, guide_givens_mill.md, guide_kestrelford.md, guide_regional_transport.md
+
+```
+According to `guide_kestrelford.md` and `guide_eating.md`, the pubs in Kestrelford serve food between 12 and 2 and again between 6 and 8:30, with nowhere to eat outside of those windows (`guide_kestrelford.md`, `guide_eating.md`).
+```
+_____________________________________________________________________________________________
+
+### What awn has a long seafront, and a land train that is aimed for children? What food does this location offer? — run 1
+
+- Best distance: 0.4060 (passed the gate)
+- Sources retrieved: guide_accessibility.md, guide_eating.md, guide_pellew_sands.md
+
+```
+Pellew Sands has a two-mile flat seafront and a land train that runs hourly between Easter and September, which is aimed at children but used by everyone (*guide_pellew_sands.md* and *guide_accessibility.md*). The food offered on its seafront consists of chips and ice cream (*guide_pellew_sands.md* and *guide_eating.md*).
+```
+_______________________________________________________________________________________________
+
+### What locations offer minor injury locations and are often expensive during the summer months july, august, or september? — run 1
+
+- Best distance: 0.5045 (passed the gate)
+- Sources retrieved: guide_brightwater.md, guide_corry_vale.md, guide_halden_bay.md, guide_kestrelford.md, guide_marchwood.md
+
+```
+Based on the provided documents, there is no information regarding locations that are expensive during the summer months of July, August, or September (guide_halden_bay.md, guide_kestrelford.md, guide_marchwood.md, guide_corry_vale.md, guide_brightwater.md). Therefore, I do not have enough information to answer your question.
+```
+_________________________________________________________________________________________________
+
+### What town in thsi region has the longest walkable path? — run 1
+
+- Best distance: 0.4541 (passed the gate)
+- Sources retrieved: guide_corry_vale.md, guide_halden_bay.md, guide_regional_transport.md, guide_walking.md
+
+```
+Based on the provided documents, there is no mention of which town has the longest walkable path, so I do not have enough information to answer your question.
+```
+_________________________________________________________________________________________________
+
+### What are the least and most accessible towns within this region? — run 1
+
+- Best distance: 0.4032 (passed the gate)
+- Sources retrieved: guide_accessibility.md, guide_corry_vale.md, guide_givens_mill.md, guide_walking.md
+
+```
+Based on the provided documents, Thornby Wells is described as "the easiest town in the region," making it the most accessible town (*guide_accessibility.md*). However, the documents do not mention which town is the least accessible (*guide_accessibility.md*; *guide_corry_vale.md*; *guide_givens_mill.md*; *guide_walking.md*). Therefore, I do not have enough information to answer that part of the question.
+```
 
 <!-- ─────────────────────────────────────────────────────────────────────────
      UNIT 2 — read this before you change anything above.
