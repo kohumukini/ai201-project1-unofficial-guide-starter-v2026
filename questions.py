@@ -21,13 +21,23 @@ Swap them for your own if you like. Keep five of them either way: criterion 3
 names a target of "4 of 5", and four of three is not a thing.
 """
 
+# QUESTIONS = [
+#     # {"question": "...", "expects": "..."},
+#     {"question": "What hours are the pubs in Kestrelford open?", "expects": "12 and 2, between 6:30 and 8"},
+#     {"question": "What town has a long seafront, and a land train that is aimed for children? What food does this location offer?", "expects": "Pellew Sands, Chips and Ice Cream"},
+#     {"question": "What locations offer minor injury locations and are often expensive during the summer months july, august, or september?", "expects": "Halden Bay"},
+#     {"question": "What town in this region has the longest walkable path?", "expects": "Kestrelford"},
+#     {"question": "What are the least and most accessible towns within this region?", "expects": "Thornby Wells is the most accessiblle, while Halden bay is the least accessible"},
+# ]
+
+# REVISION
 QUESTIONS = [
     # {"question": "...", "expects": "..."},
-    {"question": "What hours are the pubs in Kestrelford open?", "expects": "12 and 2, between 6:30 and 8"},
-    {"question": "What awn has a long seafront, and a land train that is aimed for children? What food does this location offer?", "expects": "Pellew Sands, Chips and Ice Cream"},
-    {"question": "What locations offer minor injury locations and are often expensive during the summer months july, august, or september?", "expects": "Halden Bay"},
-    {"question": "What town in thsi region has the longest walkable path?", "expects": "Kestrelford"},
-    {"question": "What are the least and most accessible towns within this region?", "expects": "Thornby Wells is the most accessiblle, while Halden bay is the least accessible"},
+    {"question": "What hours are the pubs in Kestrelford open?", "expects": ["12 and 2", "6 and 8:30"]},
+    {"question": "What town has a long seafront, and a land train that is aimed for children? What food does this location offer?", "expects": ["Pellew Sands", "chips", "ice cream", "children"]},
+    {"question": "What are all the locations that offer minor injuries units or full hospitals?", "expects": ["Kestrelford", "Halden Bay", "Givens Mill", "Elder Ness"]},
+    {"question": "What are the longest walkable paths mentioned in this region?", "expects": ["Kestrelford", "Corry Vale"]},
+    {"question": "What is the most accessible town in this region, and what amenities does it provide?", "expects": ["Thornby Wells", "free parking", "level", "flat"]},
 ]
 
 # Questions from a different world entirely. Your gate should refuse all five.

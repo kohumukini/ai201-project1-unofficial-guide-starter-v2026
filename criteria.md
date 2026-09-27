@@ -17,14 +17,7 @@ pipeline earns credit; *"80% seemed reasonable"* does not.
 
 ---
 
-## 1. Retrieved chunks contain the answer - MISSED
-
-CRITERIA RESULTS: 
-STATUS: MISSED
-CRITERIA: Unbroken
-QUESTION: Broken?
-Why: All questions that were missed are ambiguous questions that require a measurable to answer. "What is the most accessible town in this region" is unanswerable if NONE of the documents use "most accessible" to describe a town within the region. 
-Adjustment: 
+## 1. Retrieved chunks contain the answer
 
 For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
@@ -32,9 +25,32 @@ contains the answer.
 **Why this target:**
 Expecting all tests to pass is unrealistic as verbage and context specificity heavily affectcs model accuracy. Hyper specific questions may be ignored due to the lack of clear information or incorrect language.
 
+CRITERIA RESULTS: 
+STATUS: MISSED
+CRITERIA: Unbroken
+QUESTION: Broken?
+Why: All questions that were missed are ambiguous questions that require a measurable to answer. "What is the least accessible town in this region" is unanswerable if NONE of the documents use "least accessible" to describe a town within the region.
+NO CRITERIA ADJUSTMENT
+
+QUESTION ADJUSTMENTS: 
+1. No Change
+2. No Change
+3. What are all the locations in this region that offer minor injury units or full hospitals?
+4. What are the longest walkable paths mentioned in this region?
+5. What is the most accessible town in this region, and what amenities does it provide?
+
+- Question 3 originally asked about locations that were expensive in the summer. However, the documents make NO mention of expensive months, rather the months where prices are not halved. Retrieval found the documents, but nothing was specific enough to answer the question.
+- Question 4 originally asked what the longest walkable path was within the region. This also makes retrieval hard, because there is no mention of such a comparison.
+- Question 5 originally asked for the most and least accessible locations. This was once again a retreival issue, where there is no mention of a comparably least accessible location. This would require an inquery from the model itself where the judgement may not be rooted completely in the documents provided. 
+
 ---
 
 ## 2. Every answer names a source
+
+CRITERIA RESULTS:
+STATUS: MET
+Why: All llm responses so far include in-text citations. These are pointers to which documents contained the information provided.
+NO CRITERIA ADJUSTMENT
 
 Every answer the system produces names at least one source document.
 
@@ -44,6 +60,11 @@ Answers provided by the llm must be based on context provided to prevent halluci
 ---
 
 ## 3. The relevance gate stops out-of-corpus questions
+
+CRITERIA RESULTS:
+STATUS: MET
+Why: All tests of LLM responses reject out-of-corpos questions.
+NO CRITERIA ADJUSTMENT
 
 When I ask a question my documents clearly don't cover, the relevance gate
 stops it and the system returns "I don't have enough information about that" —
@@ -62,6 +83,12 @@ in at least 4 of 5 tries.
 
 ## 4. At least 9 of 10 chunks sizes reside within the window of 40-120 words (~150-500) characters with a ~10% character overlap between chunks
 
+CRITERIA RESULTS:
+STATUS: MET?
+CRITERIA: Needs Adjustment
+REVISION: All chunks maintain a size of at least 150 characters and 4 of 5 sampled chunks end with punctuation.
+Why: 9 of 10 sample chunks is ambiguous and may not be enough of a random sample to give inferences about the population. Alongside that a 10% character overlap is immeasurable when most chunks lie under 600 characters. These new metrics are measurable and ensure that chunks are of adequate size and do not split complete thoughts.
+
 <!-- YOU WRITE THIS ONE.
 
      How would you know if your chunks were the right size? Name something
@@ -79,6 +106,13 @@ in at least 4 of 5 tries.
 ---
 
 ## 5. For all 5 test questions, the model provides clear and concise answers in under 2 sentences with citations. 
+
+CRITERIA RESULTS:
+STATUS: MET
+CRITERIA: NEEDS ADJUSTMENT
+REVISION: EVERY retrieved chunk includes a full header breadcrumb (# H! > ## H2...)
+Why: The previous question was completely measurable. However, we already test sourcing within the first criteria, and shortening answers to under 2 sentences for complex queries may not allow for enoughs substance. There are recent changes to the chunking system to include semantic context during retrieval, that allows the chunks to maintain header-level context. This is measurably attainable for every chunk.
+
 <!-- YOU WRITE THIS ONE TOO.
 
      Pick something you actually care about getting right. It could be about

@@ -3,7 +3,14 @@ def judge(question, expects, answer, results) -> bool:
     q: 'give', expect: 'give'
     the expect is in the answer
     """
-    return expects.lower().strip() in answer.lower()
+    answer_lower = answer.lower()
+    expected_items = [expects] if isinstance(expects, str) else expects
+    
+    for item in expected_items: 
+        if item.lower().strip() not in answer_lower: 
+            return False
+    
+    return True
 
 """
 LLM as judge
