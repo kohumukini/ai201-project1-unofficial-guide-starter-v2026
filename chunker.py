@@ -78,33 +78,51 @@ def fallback_split(
 
     return chunks
 
-def _split_section(text: str, MAX_CHUNK_SIZE: int, OVERLAP_SIZE: int) -> list[str]: 
-    if len(text) <= MAX_CHUNK_SIZE: 
+def _split_section(text: str, max_chunk_size: int, overlap_size : int) -> list[str]:
+    text = text.strip()
+    if not text: 
+        return [] 
+    if len(text) <= max_chunk_size: 
         return [text]
     
-    pattern = r'\n\n|\n|[.!?]\s'
+    pattern = re.compile('\n\n|\n|[.!?]\s')
+    search_window = 100
+    min_chunk_ratio = 0.5
     
-    middle = len(text) // 2
-    search_start = max(0, middle - (MAX_CHUNK_SIZE // 4))
-    search_end = min(len(text), middle + (MAX_CHUNK_SIZE // 4))
-    window = text[search_start:search_end]
+    result = []
+    start = 0
+    n = len(text)
     
-    matches = list(re.finditer(pattern, window))
-    
-    if matches: 
-        best_match = min(matches, key=lambda m: abs((search_start + m.end()) - middle))
-        split_position = search_start + best_match.end()
-    else: 
-        split_position = middle
+    while start < n:
+        remaining = n - start
+        if remaining <= max_chunk_size:
+            tail = text[start:].strip()
+            if tail: 
+                result.append(tail)
+            break
         
-    left_chunk = text[:split_position].strip()
-    overlap_start = max(0, split_position - OVERLAP_SIZE)
-    right_chunk = text[overlap_start:].strip()
-    
-    if len(left_chunk) >= len(text) or len(right_chunk) >= len(text):
-        return [text[:MAX_CHUNK_SIZE].strip(), text[MAX_CHUNK_SIZE - OVERLAP_SIZE:].strip()]
-    
-    return _split_section(left_chunk, MAX_CHUNK_SIZE, OVERLAP_SIZE) + _split_section(right_chunk, MAX_CHUNK_SIZE, OVERLAP_SIZE)
+        interim_end = start + max_chunk_size
+        window_start = max(start, interim_end - search_window)
+        window_end = min(n, interim_end + search_window)
+        window = text[window_start:window_end]
+        
+        options = [
+            window_start + m.end()
+            for m in pattern.finditer(window)
+            if (window_start + m.end() - start) >= max_chunk_size * min_chunk_ratio
+        ]
+        
+        split_position = min(options, key=lambda p: abs(p - interim_end)) if options else interim_end
+        
+        chunk = text[start:split_position].strip()
+        if chunk: 
+            result.append(chunk)
+            
+        next_start = split_position - overlap_size
+        start = next_start if next_start > start else split_position
+        
+    return result
+        
 
 def split_documents(documents: list[Document], MAX_CHUNK_SIZE: int = config.CHUNK_SIZE, OVERLAP_SIZE: int = config.CHUNK_OVERLAP) -> list[Chunk]:
     """
@@ -127,15 +145,37 @@ def split_documents(documents: list[Document], MAX_CHUNK_SIZE: int = config.CHUN
     header_pattern = r'(?=\n#{1,6}\s+)'
     
     for doc in documents: 
-        # Sections = text w/o whitespace for each text split by the headerpattern within the main text body if the text exists
         sections = [s.strip() for s in re.split(header_pattern, doc.text) if s.strip()]
-        doc_chunks = []
         
-        for section in sections: 
-            section_chunks = _split_section(section, MAX_CHUNK_SIZE, OVERLAP_SIZE)
-            doc_chunks.extend(section_chunks)
+        headers: list[tuple[int, str]] = []
+        doc_chunks: list[str] = []
         
-        for idx, text in enumerate(doc_chunks): 
+        for section in sections:
+            lines = section.split("\n", 1)
+            first_line = lines[0].strip()
+            body_content = lines[1].strip() if len(lines) > 1 else ""
+            
+            if first_line.startswith("#"):
+                level = len(first_line.split()[0])
+                headers = [h for h in headers if h[0] < level]
+                headers.append((level, first_line))
+            else:
+                body_content = section
+                    
+            breadcrumb = " > ".join(h[1] for h in headers)
+            
+                
+            raw_section_chunks = (
+                _split_section(body_content, MAX_CHUNK_SIZE, OVERLAP_SIZE)
+                if body_content 
+                else []
+            )
+            
+            for chunk_text in raw_section_chunks:
+                new_text = f"{breadcrumb}\n{chunk_text}" if breadcrumb else chunk_text
+                doc_chunks.append(new_text)
+                
+        for idx, text in enumerate(doc_chunks):
             chunks.append(Chunk(
                 text, 
                 doc.source, 

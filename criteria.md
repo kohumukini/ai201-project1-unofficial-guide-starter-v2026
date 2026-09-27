@@ -17,7 +17,14 @@ pipeline earns credit; *"80% seemed reasonable"* does not.
 
 ---
 
-## 1. Retrieved chunks contain the answer
+## 1. Retrieved chunks contain the answer - MISSED
+
+CRITERIA RESULTS: 
+STATUS: MISSED
+CRITERIA: Unbroken
+QUESTION: Broken?
+Why: All questions that were missed are ambiguous questions that require a measurable to answer. "What is the most accessible town in this region" is unanswerable if NONE of the documents use "most accessible" to describe a town within the region. 
+Adjustment: 
 
 For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
@@ -66,8 +73,6 @@ in at least 4 of 5 tries.
           sentence cut in half at either end."
        - "No chunk is shorter than 200 characters, since anything below that
           in my corpus turned out to be a heading with no content under it." -->
-
-
 
 **Why this target:** The documents provided are small enough that smaller chunks are necessary to parse information correctly. Most chunks should pass this test however, some chunks may end up containing less than 40 characters due to the document length.
 
