@@ -160,7 +160,16 @@ Based on `guide_accessibility.md`, Thornby Wells is described as the easiest tow
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-| What times are the pubs in kestrelford open? | city_guides | 0.363 |
+| What times are the pubs in kestrelford open? | Yes | 0.2680 |
+| What town has a long seafront, and a land train that is aimed for children? What food does this location offer? | Yes | 0.4425 |
+| What are all the locations that offer minor injuries units or full hospitals? | Yes | 0.4483 |
+| What are the longest walkable paths metnioned in this region? | Yes | 0.4786 |
+| What is the most accessible town in this region, and what amenities does it provide? | Yes | 0.4023 |
+| What is the capital of Mongolia? | refused | 0.803 |
+| How do I change the oil in a diesel engine? | refused | 0.891 |
+| Who won the 1994 World Cup? | refused | 0.975 |
+| What is the recommended dosage of ibuprofen for a headache? | refused | 0.838 |
+| How do I write a for loop in Rust? | refused | 0.838 |
 
 ## How I Used AI
 
@@ -269,7 +278,7 @@ Criteria 4 & 5:
 - Criteria 4: All sampled chunks maintain a size of at least 150 characters and end with punctuation.
 - Criteria 5: Every retrieved sample chunk includes a full header breadcrumb
 
-Questions: 
+Questions:
 
 - Adjusted questions to be more specific. Adjusted questions to ask specific questions with clear information within the documents. Ex. Asking for the most accessible town and what amenities it has, rather than asking for the most/least accessible towns withint he region.
 
@@ -299,6 +308,37 @@ Chunking changes: Header breadcrumbs allow the system to see semantic context. I
 | 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
 | 4. Chunks > 150 characters & end with punctuation | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
 | 5. Every chunk has header breadcrumbs | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+
+### What is the most accessible town in this region, and what amenities does it provide? — run 3
+
+- Best distance: 0.4023 (passed the gate)
+- Sources retrieved: guide_accessibility.md, guide_corry_vale.md, guide_walking.md
+
+```
+According to `guide_walking.md` and `guide_accessibility.md`, Thornby Wells is the most accessible town in the region on foot. It features flat, formal gardens, level streets, a central station, and a pump room and gardens that are level throughout (`guide_walking.md`, `guide_accessibility.md`).
+```
+
+### What are all the locations that offer minor injuries units or full hospitals? — run 2
+
+- Best distance: 0.4483 (passed the gate)
+- Sources retrieved: guide_accessibility.md, guide_givens_mill.md, guide_halden_bay.md, guide_kestrelford.md, guide_marchwood.md
+
+```
+Based on the provided documents, Marchwood has the nearest full hospital, while Brightwater has a hospital, and Kestrelford, Halden Bay, Corry Vale, Givens Mill, and Elder Ness have minor injuries units with limited hours or nothing at all (`guide_accessibility.md`).
+```
+
+======================================================================
+Chunk 10  |  source: guide_seasons.md#0  |  produced by: chunker.py::split_documents
+======================================================================
+
+# When to visit the region > ## Spring, March to May
+
+Days lengthen quickly and businesses that closed for winter reopen through
+March and April. By May everything is open and the weather is reliable enough
+to plan around. Late May is arguably the best week of the year in Brightwater —
+long days, everything running, and the students gone.
+
+---
 
 **Did it help?**
 This did help. Metrics are better. Questions now pass the judge as well.
