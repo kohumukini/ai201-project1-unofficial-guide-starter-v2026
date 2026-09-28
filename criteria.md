@@ -25,14 +25,15 @@ contains the answer.
 **Why this target:**
 Expecting all tests to pass is unrealistic as verbage and context specificity heavily affectcs model accuracy. Hyper specific questions may be ignored due to the lack of clear information or incorrect language.
 
-CRITERIA RESULTS: 
+CRITERIA RESULTS:
 STATUS: MISSED
 CRITERIA: Unbroken
 QUESTION: Broken?
 Why: All questions that were missed are ambiguous questions that require a measurable to answer. "What is the least accessible town in this region" is unanswerable if NONE of the documents use "least accessible" to describe a town within the region.
 NO CRITERIA ADJUSTMENT
 
-QUESTION ADJUSTMENTS: 
+QUESTION ADJUSTMENTS:
+
 1. No Change
 2. No Change
 3. What are all the locations in this region that offer minor injury units or full hospitals?
@@ -41,7 +42,7 @@ QUESTION ADJUSTMENTS:
 
 - Question 3 originally asked about locations that were expensive in the summer. However, the documents make NO mention of expensive months, rather the months where prices are not halved. Retrieval found the documents, but nothing was specific enough to answer the question.
 - Question 4 originally asked what the longest walkable path was within the region. This also makes retrieval hard, because there is no mention of such a comparison.
-- Question 5 originally asked for the most and least accessible locations. This was once again a retreival issue, where there is no mention of a comparably least accessible location. This would require an inquery from the model itself where the judgement may not be rooted completely in the documents provided. 
+- Question 5 originally asked for the most and least accessible locations. This was once again a retreival issue, where there is no mention of a comparably least accessible location. This would require an inquery from the model itself where the judgement may not be rooted completely in the documents provided.
 
 ---
 
@@ -105,7 +106,7 @@ Why: 9 of 10 sample chunks is ambiguous and may not be enough of a random sample
 
 ---
 
-## 5. For all 5 test questions, the model provides clear and concise answers in under 2 sentences with citations. 
+## 5. For all 5 test questions, the model provides clear and concise answers in 2 sentences or less with citations. 
 
 CRITERIA RESULTS:
 STATUS: MET
